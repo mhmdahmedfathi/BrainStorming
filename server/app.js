@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/users", require("./routes/users"));
-app.use("/chat", require("./routes/chat"));
+//app.use("/chat", require("./routes/chat"));
 
 app.listen(PORT, (err) => {
   if (err) return console.error(err);
