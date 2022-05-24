@@ -1,18 +1,25 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
+const User = require("../models/User");
 
 /* AUTHENTICATION ROUTES */
 //router.post('/login', login);
 
 router.post("/signup", async (req, res) => {
   try {
-    const { name, username } = req.body;
+    const { name, username, password, password2 } = req.body;
 
-    const result = await User.findOne({ username });
+    const result =
+      (await User.findOne({ username })) || (await User.findOne({ name }));
 
     if (result) {
-      return res.status(400).json({
+      return res.json({
         error: "This user already exists",
+      });
+    }
+    if (req.password !== req.password2) {
+      return res.json({
+        error: "Passwords don't match",
       });
     }
 
