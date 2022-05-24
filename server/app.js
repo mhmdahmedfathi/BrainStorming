@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 const app = express();
 
@@ -14,6 +15,7 @@ db().catch((err) => console.log(err));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 app.use("/users", require("./routes/users"));
 //app.use("/chat", require("./routes/chat"));
