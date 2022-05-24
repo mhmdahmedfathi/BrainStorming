@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhmdahmedfathi/GP.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhmdahmedfathi/GP/issues"
+  },
+  "homepage": "https://github.com/mhmdahmedfathi/GP#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "mongoose": "^6.3.4",
+    "socket.io": "^4.5.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
