@@ -2,7 +2,6 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
 
 /* AUTHENTICATION ROUTES */
 
@@ -18,7 +17,8 @@ router.post("/signup", async (req, res) => {
         error: "This user already exists",
       });
     }
-    if (req.password !== req.password2) {
+
+    if (password !== password2) {
       return res.status(400).json({
         ApiStatus: false,
         error: "Passwords don't match",
@@ -72,11 +72,17 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    data = {
+      username: user.username,
+      name: user.name,
+    };
+
     const token = jwt.sign({ username }, "LoginAccess");
 
     res.status(200).json({
       ApiStatus: true,
       success: "User logged in successfully",
+      data,
       token,
     });
   } catch (error) {
