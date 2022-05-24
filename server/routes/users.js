@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
 /* AUTHENTICATION ROUTES */
 
@@ -12,25 +13,38 @@ router.post("/signup", async (req, res) => {
     const result = await User.findOne({ username });
 
     if (result) {
-      return res.json({
+      return res.status(400).json({
+        ApiStatus: false,
         error: "This user already exists",
       });
     }
     if (req.password !== req.password2) {
-      return res.json({
+      return res.status(400).json({
+        ApiStatus: false,
         error: "Passwords don't match",
       });
     }
 
     req.body.password = await bcrypt.hash(password, 10);
 
-    await User.create(req.body);
+    const user = await User.create(req.body);
+
+    data = {
+      username: user.username,
+      name: user.name,
+    };
+
+    const token = jwt.sign({ username: user.username }, "LoginAccess");
 
     res.status(201).json({
+      ApiStatus: true,
       success: "User signed up successfully",
+      data,
+      token,
     });
   } catch (error) {
     return res.status(500).json({
+      ApiStatus: false,
       error: error.message,
     });
   }
@@ -44,6 +58,7 @@ router.post("/login", async (req, res) => {
 
     if (!user) {
       return res.json({
+        ApiStatus: false,
         error: "User not found",
       });
     }
@@ -52,6 +67,7 @@ router.post("/login", async (req, res) => {
 
     if (!isMatch) {
       return res.json({
+        ApiStatus: false,
         error: "Incorrect password",
       });
     }
@@ -59,11 +75,13 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ username }, "LoginAccess");
 
     res.status(200).json({
+      ApiStatus: true,
       success: "User logged in successfully",
       token,
     });
   } catch (error) {
     return res.status(500).json({
+      ApiStatus: false,
       error: error.message,
     });
   }
