@@ -1,36 +1,36 @@
-const moment = require('moment');
-const mongoose = require('mongoose');
+const moment = require("moment");
+const mongoose = require("mongoose");
 
-const chatSchema = new mongoose.Schema({
+const chatSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        minLength: 3,
-        maxLength: 40,
-        required: true
+      type: String,
+      minLength: 3,
+      maxLength: 40,
+      required: true,
     },
     username: {
-        type: String,
-        maxLength: 100,
-        required: true
+      type: String,
+      maxLength: 100,
+      required: true,
     },
     message: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    services:{
-        type:String,
-        required:true
+    services: {
+      type: String,
+      required: true,
     },
-    time:{
-        type:String
-    }
+    time: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
-}, { timestamps: true });
+chatSchema.pre("save", async function () {
+  this.time = moment().format("MM Do YYYY, hh:mm:ss A");
+});
 
-
-chatSchema.pre("save", async function(){
-    this.time = moment().format('MMMM Do YYYY, h:mm:ss a');
-})
-
-
-module.exports = mongoose.model('chat', chatSchema);
+module.exports = mongoose.model("chat", chatSchema);
