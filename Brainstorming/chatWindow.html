@@ -81,8 +81,12 @@
                         <a href="index.html" class="nav-item nav-link">Home</a>
                         <a href="about.html" class="nav-item nav-link ">About Us </a>
                         <a href="service.html" class="nav-item nav-link active">Groups</a>
-                        <a href="login.html" class="nav-item nav-link">Login</a>
-                        <a href="register.html" class="nav-item nav-link">Register</a>
+                        <a href="login.html" id="login-nav-link" style="display: none;"
+                            class="nav-item nav-link">Login</a>
+                        <a href="register.html" id="register-nav-link" style="display: none;"
+                            class="nav-item nav-link">Register</a>
+                        <a href="#" id="user-nav-link" style="display: none;" class="nav-item nav-link"></a>
+                        <a href="#" id="logout-nav-link" style="display: none;" class="nav-item nav-link">Logout</a>
                     </div>
                 </div>
             </nav>
@@ -383,6 +387,19 @@
     <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
+    <script src="../server/node_modules/socket.io/client-dist/socket.io.min.js"></script>
+    <script>
+        const socket = io("http://localhost:8080", {
+            transports: ['websocket'],
+            auth: {
+                AccessToken: localStorage.getItem("token")
+            }
+        });
+
+        socket.emit("joinRoom", {
+            room: "brainstorming"
+        });
+    </script>
     <script src="js/main.js"></script>
     <script src="js/index.js"></script>
 </body>

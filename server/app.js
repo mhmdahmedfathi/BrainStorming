@@ -1,12 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const socket = require("socket.io");
-const cors = require('cors');
-const  Socket  = require("./utils/Socket");
+const cors = require("cors");
+
+const { connection } = require("./utils/Socket");
+
 const app = express();
 
-
-const activeUsers = new Set();
 const PORT = process.env.PORT || 8080;
 
 async function db() {
@@ -28,7 +28,12 @@ const server = app.listen(PORT, (err) => {
   console.log(`Server started listening at port ${PORT}`);
 });
 
-const io = socket(server);
+const io = socket(server, {
+  cors: {
+    origins: ["*"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["AccessToken"],
+  },
+});
 
-io.on("joinroom",Socket.connection)
-
+io.on("connection", connection);

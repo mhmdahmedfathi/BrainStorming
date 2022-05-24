@@ -1,18 +1,45 @@
 const registerNavLink = document.querySelector("#register-nav-link");
 const loginNavLink = document.querySelector("#login-nav-link");
+const userNavLink = document.querySelector("#user-nav-link");
+const logoutNavLink = document.querySelector("#logout-nav-link");
 
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 
 window.addEventListener("load", () => {
   const token = localStorage.getItem("token");
+  const userData = localStorage.getItem("user-data");
+  let username = "";
+  if (userData) {
+    username = JSON.parse(userData).username;
+  }
   const isRegisterPage = window.location.href.includes("register");
   const isLoginPage = window.location.href.includes("login");
+
+  if (token) {
+    registerNavLink.style.display = "none";
+    loginNavLink.style.display = "none";
+    userNavLink.style.display = "block";
+    userNavLink.innerText = username;
+    logoutNavLink.style.display = "block";
+  } else {
+    registerNavLink.style.display = "block";
+    loginNavLink.style.display = "block";
+    userNavLink.style.display = "none";
+    logoutNavLink.style.display = "none";
+  }
 
   if (token && (isRegisterPage || isLoginPage)) {
     alert("You are already logged in");
     location.href = "./index.html";
   }
+});
+
+logoutNavLink?.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user-data");
+  alert("You have been logged out");
+  location.href = "./index.html";
 });
 
 registerForm?.addEventListener("submit", (e) => {
