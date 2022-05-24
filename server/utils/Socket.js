@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const { verify } = require("jsonwebtoken");
+const Chat = require("../models/Chat");
 
 const users = [];
 
@@ -15,7 +17,7 @@ module.exports = {
     let user;
 
     try {
-      const decoded = jwt.verify(token, "LoginAccess");
+      const decoded = verify(token, "LoginAccess");
       user = decoded.username;
     } catch (error) {
       socket.disconnect();
@@ -30,9 +32,14 @@ module.exports = {
     });
 
     // add identity of user mapped to the socket id
-    socket.on("joinRoom", (room) => {
+    socket.on("joinRoom", async(room) => {
       console.log({ user, room });
-
+      let RoomMessages = await Chat.find({
+        service:room
+      })
+      socket.send(JSON.stringify({
+        RoomMessages
+      }));
       users.push({
         socketId: socket.id,
         userId: user._id,
@@ -40,5 +47,19 @@ module.exports = {
 
       console.log(users);
     });
+
+    //message on the desired room 
+    socket.on("message", async (room,message) => {
+      console.log({ user, room });
+
+      await Chat.create({
+        name:user.name,
+        username:user.username,
+        message,
+        service:room
+      })
+      
+    });
+
   },
 };
