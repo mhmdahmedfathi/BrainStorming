@@ -27,15 +27,13 @@ module.exports = {
     user = await User.findOne(user._id);
 
     // add identity of user mapped to the socket id
-    socket.on("joinRoom", async ({room}) => {
+    socket.on("joinRoom", async ({room},callback) => {
       console.log({ user, room });
       let RoomMessages = await Chat.find({
         service: room,
       });
 
-      socket.emit("RoomMessages",()=>{
-          RoomMessages
-      })
+      callback(RoomMessages)
       users.push({
         socketId: socket.id,
         userId: user._id,
@@ -45,14 +43,15 @@ module.exports = {
     
 
     //message on the desired room
-    socket.on("message", async ({room, message}) => {
+    socket.on("message", async ({room, message},callback) => {
 
-      await Chat.create({
+      const newMessage  =  await Chat.create({
         name: user.name,
         username: user.username,
         message,
         service: room,
       });
+      callback(newMessage)
     });
 
     // event fired when the chat room is disconnected
