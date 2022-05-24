@@ -1,8 +1,8 @@
-const User = require("../models/User");
 const { verify } = require("jsonwebtoken");
+const User = require("../models/User");
 const Chat = require("../models/Chat");
 
-const users = [];
+let users = [];
 
 module.exports = {
   async connection(socket) {
@@ -26,20 +26,17 @@ module.exports = {
 
     user = await User.findOne(user._id);
 
-    // event fired when the chat room is disconnected
-    socket.on("disconnect", () => {
-      users = users.filter((user) => user.socketId !== socket.id);
-    });
-
     // add identity of user mapped to the socket id
-    socket.on("joinRoom", async(room) => {
+    socket.on("joinRoom", async (room) => {
       console.log({ user, room });
       let RoomMessages = await Chat.find({
-        service:room
-      })
-      socket.send(JSON.stringify({
-        RoomMessages
-      }));
+        service: room,
+      });
+      socket.send(
+        JSON.stringify({
+          RoomMessages,
+        })
+      );
       users.push({
         socketId: socket.id,
         userId: user._id,
@@ -48,18 +45,21 @@ module.exports = {
       console.log(users);
     });
 
-    //message on the desired room 
-    socket.on("message", async (room,message) => {
+    //message on the desired room
+    socket.on("message", async (room, message) => {
       console.log({ user, room });
 
       await Chat.create({
-        name:user.name,
-        username:user.username,
+        name: user.name,
+        username: user.username,
         message,
-        service:room
-      })
-      
+        service: room,
+      });
     });
 
+    // event fired when the chat room is disconnected
+    socket.on("disconnect", () => {
+      users = users.filter((user) => user.socketId !== socket.id);
+    });
   },
 };
