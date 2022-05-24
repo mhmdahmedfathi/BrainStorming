@@ -18,7 +18,7 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    services: {
+    service: {
       type: String,
       required: true,
     },

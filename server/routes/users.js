@@ -1,16 +1,15 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 /* AUTHENTICATION ROUTES */
-//router.post('/login', login);
 
 router.post("/signup", async (req, res) => {
   try {
     const { name, username, password, password2 } = req.body;
 
-    const result =
-      (await User.findOne({ username })) || (await User.findOne({ name }));
+    const result = await User.findOne({ username });
 
     if (result) {
       return res.json({
@@ -31,7 +30,40 @@ router.post("/signup", async (req, res) => {
       success: "User signed up successfully",
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.json({
+        error: "User not found",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.json({
+        error: "Incorrect password",
+      });
+    }
+
+    const token = jwt.sign({ username }, "LoginAccess");
+
+    res.status(200).json({
+      success: "User logged in successfully",
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({
       error: error.message,
     });
   }
