@@ -27,27 +27,25 @@ module.exports = {
     user = await User.findOne(user._id);
 
     // add identity of user mapped to the socket id
-    socket.on("joinRoom", async (room) => {
+    socket.on("joinRoom", async ({room}) => {
       console.log({ user, room });
       let RoomMessages = await Chat.find({
         service: room,
       });
-      socket.send(
-        JSON.stringify({
-          RoomMessages,
-        })
-      );
+
+      socket.emit("RoomMessages",()=>{
+          RoomMessages
+      })
       users.push({
         socketId: socket.id,
         userId: user._id,
       });
 
-      console.log(users);
     });
+    
 
     //message on the desired room
-    socket.on("message", async (room, message) => {
-      console.log({ user, room });
+    socket.on("message", async ({room, message}) => {
 
       await Chat.create({
         name: user.name,
