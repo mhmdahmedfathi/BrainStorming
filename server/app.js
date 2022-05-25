@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const socket = require("socket.io");
 const cors = require("cors");
 
-const { connection } = require("./utils/Socket");
+const Socket = require("./utils/Socket");
 
 const app = express();
 
@@ -28,12 +27,4 @@ const server = app.listen(PORT, (err) => {
   console.log(`Server started listening at port ${PORT}`);
 });
 
-const io = socket(server, {
-  cors: {
-    origins: ["*"],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["AccessToken"],
-  },
-});
-
-io.on("connection", connection);
+Socket(server);

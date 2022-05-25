@@ -16,17 +16,19 @@ window.addEventListener("load", () => {
   const isRegisterPage = window.location.href.includes("register");
   const isLoginPage = window.location.href.includes("login");
 
-  if (token) {
-    registerNavLink.style.display = "none";
-    loginNavLink.style.display = "none";
-    userNavLink.style.display = "block";
-    userNavLink.innerText = username;
-    logoutNavLink.style.display = "block";
-  } else {
-    registerNavLink.style.display = "block";
-    loginNavLink.style.display = "block";
-    userNavLink.style.display = "none";
-    logoutNavLink.style.display = "none";
+  if (!isRegisterPage && !isLoginPage) {
+    if (token) {
+      registerNavLink.style.display = "none";
+      loginNavLink.style.display = "none";
+      userNavLink.style.display = "block";
+      userNavLink.innerText = username;
+      logoutNavLink.style.display = "block";
+    } else {
+      registerNavLink.style.display = "block";
+      loginNavLink.style.display = "block";
+      userNavLink.style.display = "none";
+      logoutNavLink.style.display = "none";
+    }
   }
 
   if (token && (isRegisterPage || isLoginPage)) {
