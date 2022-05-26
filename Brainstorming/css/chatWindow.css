@@ -14,6 +14,22 @@
     scroll-behavior: smooth;
 }
 
+.chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #b8b8b8;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: rgb(206, 206, 206);
+}
+
 .chat-message-left,
 .chat-message-right {
     display: flex;
