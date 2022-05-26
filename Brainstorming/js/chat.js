@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  socket.on("connect", () => {
+  socket.on("connected", () => {
     socket.emit("joinRoom", room);
   });
 
