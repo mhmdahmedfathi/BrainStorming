@@ -30,28 +30,28 @@ const parseMessage = (message) => {
       ? names[0][0] + names[names.length - 1][0]
       : names[0][0] + names[0][1];
 
-  return `<div class="chat-message-left pb-4">
-            <div class="d-flex flex-column">
-                <div 
-                  class="bg-${
-                    message.username === username ? "primary" : "warning"
-                  } 
-                    d-flex align-items-center justify-content-center text-white rounded-circle mr-1" 
-                  alt=${message.name} 
-                  style="width: 40px; height: 40px">
-                    ${nameInitials}
-                </div>
-              </div>
-            <div class="flex-shrink-1 bg-light rounded pb-2 px-3">
-              <div class="text-muted small font-italic">
-                ${message.time}
-              </div>
-              <div class="font-weight-bold mb-1">
-                ${message.name} | ${message.username}
-              </div>
-              ${message.message}
-            </div>
-        </div>`;
+  return `<div 
+    class="chat-message-${message.username === username ? "right" : "left"} 
+      pb-4">
+      <div class="d-flex flex-column">
+          <div 
+            class="bg-${message.username === username ? "primary" : "warning"} 
+              d-flex align-items-center justify-content-center text-white rounded-circle mx-1" 
+            alt=${message.name} 
+            style="width: 40px; height: 40px">
+              ${nameInitials}
+          </div>
+        </div>
+      <div class="flex-shrink-1 bg-light rounded pb-2 px-3">
+        <div class="text-muted small font-italic">
+          ${message.time}
+        </div>
+        <div class="font-weight-bold mb-1">
+          ${message.name} | ${message.username}
+        </div>
+        ${message.message}
+      </div>
+  </div>`;
 };
 
 const parseNotification = (notification) => {
@@ -70,12 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-  socket.emit("joinRoom", room);
+  socket.on("connect", () => {
+    socket.emit("joinRoom", room);
+  });
 
   socket.on("message", (response) => {
     if (response.type === "joined-room") {
       messagesList.innerHTML += parseNotification(response.notification);
       onlineCount.innerText = response.onlineUsers;
+      messagesList.scrollTop = messagesList.scrollHeight;
     } else if (response.type === "room-messages") {
       response.messages.forEach((message) => {
         messagesList.innerHTML += parseMessage(message);
@@ -87,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (response.type === "left-room") {
       messagesList.innerHTML += parseNotification(response.notification);
       onlineCount.innerText = response.onlineUsers;
+      messagesList.scrollTop = messagesList.scrollHeight;
     }
   });
 
