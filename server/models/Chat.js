@@ -29,8 +29,9 @@ const chatSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// pre-save hook to set the time of the message
 chatSchema.pre("save", async function () {
-  this.time = moment().format("Do MMM YYYY, hh:mm A"); //add the data to every message 
+  this.time = moment().format("Do MMM YYYY, hh:mm A"); // adds the date to every message
 });
 
 module.exports = mongoose.model("chat", chatSchema);
