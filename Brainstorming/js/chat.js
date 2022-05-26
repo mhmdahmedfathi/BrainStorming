@@ -55,7 +55,7 @@ const parseMessage = (message) => {
 };
 
 const parseNotification = (notification) => {
-  return `<div class="chat-message-left pb-4">
+  return `<div class="chat-message-center pb-4">
             <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
                 <div class="mb-1">${notification}</div>
             </div>
