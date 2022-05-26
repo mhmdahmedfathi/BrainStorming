@@ -3,11 +3,11 @@ const socket = require("socket.io");
 const User = require("../models/User");
 const Chat = require("../models/Chat");
 
-let users = [];
+let users = []; //array of online users that joined the socket
 
 module.exports = (server) => {
   const io = socket(server, {
-    cors: {
+    cors: { // enable cross origin between the socket and the front
       origins: ["*"],
       methods: ["GET", "POST"],
       allowedHeaders: ["AccessToken"],
@@ -16,8 +16,8 @@ module.exports = (server) => {
 
   io.on("connection", async (socket) => {
     // handling authorization
-    const token = socket.handshake.auth["AccessToken"];
-    if (!token) {
+    const token = socket.handshake.auth["AccessToken"]; //get the token provided from the front 
+    if (!token) { //if their is noo token so he needs to login first so disconnect him from the socket
       socket.disconnect();
       return;
     }
@@ -25,16 +25,15 @@ module.exports = (server) => {
     let user, room;
 
     try {
-      const decoded = verify(token, "LoginAccess");
-      user = decoded.username;
+      const decoded = verify(token, "LoginAccess"); //compare provided token from the front and make sure it contains information needed
+      user = decoded.username; //get the username from the token
     } catch (error) {
-      socket.disconnect();
+      socket.disconnect(); //if the token contains no information
       return;
     }
 
     user = await User.findOne({ username: user });
 
-    console.log("connected", user.name);
 
     io.to(socket.id).emit("connected");
 
@@ -50,8 +49,6 @@ module.exports = (server) => {
         username: user.username,
         room,
       });
-
-      console.log(users);
 
       socket.join(room);
 
@@ -70,7 +67,6 @@ module.exports = (server) => {
 
     //message on the desired room
     socket.on("message", async ({ room, message }) => {
-      console.log("new message");
       const newMessage = await Chat.create({
         name: user.name,
         username: user.username,
@@ -86,9 +82,7 @@ module.exports = (server) => {
 
     // event fired when the chat room is disconnected
     socket.on("disconnect", () => {
-      console.log(user.name, "disconnected");
       users = users.filter((user) => user.socketId !== socket.id);
-      console.log(users);
       io.to(room).emit("message", {
         type: "left-room",
         notification: `${user.username} has left the room`,
