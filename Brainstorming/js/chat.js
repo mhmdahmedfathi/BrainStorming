@@ -21,7 +21,7 @@ if (!room) {
 
 topicTitle.innerText = room;
 roomTitle.innerText = room + " chat room";
-onlineCount.innerText = Math.floor(Math.random() * 100);
+onlineCount.innerText = 0;
 
 const parseMessage = (message) => {
   const names = message.name.split(" ");
@@ -29,22 +29,27 @@ const parseMessage = (message) => {
     names.length > 1
       ? names[0][0] + names[names.length - 1][0]
       : names[0][0] + names[0][1];
+
   return `<div class="chat-message-left pb-4">
             <div class="d-flex flex-column">
-                <div class="bg-${
-                  message.username === username ? "primary" : "warning"
-                } d-flex align-items-center justify-content-center text-white rounded-circle mr-1" alt=${
-    message.name
-  } style="width: 40px; height: 40px">${nameInitials}</div>
-                <div class="text-muted small text-nowrap mt-2">${
-                  message.time
-                }</div>
-            </div>
-            <div class="flex-shrink-1 bg-light rounded py-2 px-3">
-                <div class="font-weight-bold mb-1">${message.name} | ${
-    message.username
-  }</div>
-                ${message.message}
+                <div 
+                  class="bg-${
+                    message.username === username ? "primary" : "warning"
+                  } 
+                    d-flex align-items-center justify-content-center text-white rounded-circle mr-1" 
+                  alt=${message.name} 
+                  style="width: 40px; height: 40px">
+                    ${nameInitials}
+                </div>
+              </div>
+            <div class="flex-shrink-1 bg-light rounded pb-2 px-3">
+              <div class="text-muted small font-italic">
+                ${message.time}
+              </div>
+              <div class="font-weight-bold mb-1">
+                ${message.name} | ${message.username}
+              </div>
+              ${message.message}
             </div>
         </div>`;
 };
@@ -70,14 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("message", (response) => {
     if (response.type === "joined-room") {
       messagesList.innerHTML += parseNotification(response.notification);
+      onlineCount.innerText = response.onlineUsers;
     } else if (response.type === "room-messages") {
       response.messages.forEach((message) => {
         messagesList.innerHTML += parseMessage(message);
       });
+      onlineCount.innerText = response.onlineUsers;
     } else if (response.type === "new-message") {
       messagesList.innerHTML += parseMessage(response.message);
+      messagesList.scrollTop = messagesList.scrollHeight;
     } else if (response.type === "left-room") {
       messagesList.innerHTML += parseNotification(response.notification);
+      onlineCount.innerText = response.onlineUsers;
     }
   });
 

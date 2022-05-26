@@ -15,8 +15,6 @@ module.exports = (server) => {
   });
 
   io.on("connection", async (socket) => {
-    console.log("connected", socket.id);
-
     // handling authorization
     const token = socket.handshake.auth["AccessToken"];
     if (!token) {
@@ -36,6 +34,8 @@ module.exports = (server) => {
 
     user = await User.findOne({ username: user });
 
+    console.log("connected", user.name);
+
     // add identity of user mapped to the socket id
     socket.on("joinRoom", async (roomName) => {
       room = roomName;
@@ -46,18 +46,23 @@ module.exports = (server) => {
         socketId: socket.id,
         userId: user._id,
         username: user.username,
+        room,
       });
+
+      console.log(users);
 
       socket.join(room);
 
       socket.broadcast.to(room).emit("message", {
         type: "joined-room",
         notification: `${user.username} has joined the room`,
+        onlineUsers: users.filter((user) => user.room === room).length,
       });
 
       io.to(socket.id).emit("message", {
         type: "room-messages",
         messages: RoomMessages,
+        onlineUsers: users.filter((user) => user.room === room).length,
       });
     });
 
@@ -79,12 +84,13 @@ module.exports = (server) => {
 
     // event fired when the chat room is disconnected
     socket.on("disconnect", () => {
-      console.log("disconnected");
+      console.log(user.name, "disconnected");
       users = users.filter((user) => user.socketId !== socket.id);
       console.log(users);
       io.to(room).emit("message", {
         type: "left-room",
         notification: `${user.username} has left the room`,
+        onlineUsers: users.filter((user) => user.room === room).length,
       });
     });
   });
