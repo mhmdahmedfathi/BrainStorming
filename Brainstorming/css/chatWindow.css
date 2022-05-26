@@ -17,16 +17,20 @@
 .chat-message-left,
 .chat-message-right {
     display: flex;
-    flex-shrink: 0
+    flex-shrink: 0;
 }
 
 .chat-message-left {
-    margin-right: auto
+    margin-right: auto;
+}
+
+.chat-message-center {
+    margin: 0 auto;
 }
 
 .chat-message-right {
     flex-direction: row-reverse;
-    margin-left: auto
+    margin-left: auto;
 }
 
 .py-3 {
