@@ -1,6 +1,6 @@
 const { verify } = require("jsonwebtoken");
 
-const isAuth = (req, res, next) => {
+const isAuth = (req, res, next) => { //used to make sure that the user is authorized to enter
     const accessToken = req.header("AccessToken");
     if (!accessToken) {
         res.json({ error: "User is not logged in" });

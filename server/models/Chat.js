@@ -30,7 +30,7 @@ const chatSchema = new mongoose.Schema(
 );
 
 chatSchema.pre("save", async function () {
-  this.time = moment().format("Do MMM YYYY, hh:mm A");
+  this.time = moment().format("Do MMM YYYY, hh:mm A"); //add the data to every message 
 });
 
 module.exports = mongoose.model("chat", chatSchema);
