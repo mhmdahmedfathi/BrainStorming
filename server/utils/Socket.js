@@ -36,6 +36,8 @@ module.exports = (server) => {
 
     console.log("connected", user.name);
 
+    io.to(socket.id).emit("connected");
+
     // add identity of user mapped to the socket id
     socket.on("joinRoom", async (roomName) => {
       room = roomName;
