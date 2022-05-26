@@ -30,16 +30,14 @@ const parseMessage = (message) => {
       ? names[0][0] + names[names.length - 1][0]
       : names[0][0] + names[0][1];
 
-  return `<div 
-    class="chat-message-${message.username === username ? "right" : "left"} 
-      pb-4">
+  if (message.username === username) {
+    return `<div class="chat-message-right pb-4">
       <div class="d-flex flex-column">
           <div 
-            class="bg-${message.username === username ? "primary" : "warning"} 
-              d-flex align-items-center justify-content-center text-white rounded-circle mx-1" 
+            class="bg-primary d-flex align-items-center justify-content-center text-white rounded-circle mx-1" 
             alt=${message.name} 
             style="width: 40px; height: 40px">
-              ${nameInitials}
+              ${nameInitials.toUpperCase()}
           </div>
         </div>
       <div class="flex-shrink-1 bg-light rounded pb-2 px-3">
@@ -51,7 +49,28 @@ const parseMessage = (message) => {
         </div>
         ${message.message}
       </div>
-  </div>`;
+    </div>`;
+  } else {
+    return `<div class="chat-message-left pb-4">
+      <div class="d-flex flex-column">
+          <div 
+            class="bg-warning d-flex align-items-center justify-content-center text-white rounded-circle mx-1" 
+            alt=${message.name} 
+            style="width: 40px; height: 40px">
+              ${nameInitials.toUpperCase()}
+          </div>
+        </div>
+      <div class="flex-shrink-1 bg-light rounded pb-2 px-3">
+        <div class="text-muted small font-italic">
+          ${message.time}
+        </div>
+        <div class="font-weight-bold mb-1">
+          ${message.name} | ${message.username}
+        </div>
+        ${message.message}
+      </div>
+    </div>`;
+  }
 };
 
 const parseNotification = (notification) => {
@@ -59,7 +78,7 @@ const parseNotification = (notification) => {
             <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
                 <div class="mb-1">${notification}</div>
             </div>
-        </div>`;
+          </div>`;
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -80,10 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
       onlineCount.innerText = response.onlineUsers;
       messagesList.scrollTop = messagesList.scrollHeight;
     } else if (response.type === "room-messages") {
+      onlineCount.innerText = response.onlineUsers;
       response.messages.forEach((message) => {
         messagesList.innerHTML += parseMessage(message);
       });
-      onlineCount.innerText = response.onlineUsers;
     } else if (response.type === "new-message") {
       messagesList.innerHTML += parseMessage(response.message);
       messagesList.scrollTop = messagesList.scrollHeight;

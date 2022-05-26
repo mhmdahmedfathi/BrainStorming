@@ -75,6 +75,7 @@ registerForm?.addEventListener("submit", (e) => {
       }
     })
     .catch((err) => {
+      alert("An error happen while process your request. Please try again");
       console.log(err);
     });
 });
@@ -108,6 +109,7 @@ loginForm?.addEventListener("submit", (e) => {
       }
     })
     .catch((err) => {
+      alert("An error happen while process your request. Please try again");
       console.log(err);
     });
 });
