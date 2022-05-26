@@ -1,13 +1,39 @@
 const router = require("express").Router();
+const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+
+// validation rules for signup data
+const signupValidationSchema = Joi.object({
+  name: Joi.string().required(),
+  username: Joi.string().required(),
+  password: Joi.string().alphanum().min(8).required(),
+  password2: Joi.string().alphanum().min(8).required(),
+});
+
+// validation rules for login data
+const loginValidationSchema = Joi.object({
+  username: Joi.string().required(),
+  password: Joi.string().alphanum().min(8).required(),
+});
 
 /* AUTHENTICATION ROUTES */
 
 // sign up new user route
 router.post("/signup", async (req, res) => {
   try {
+    // validate the request body
+    const { error } = signupValidationSchema.validate(req.body, { abortEarly: false });
+
+    // if the request body is not valid, return an error
+    if (error) {
+      return res.status(400).json({
+        ApiStatus: false,
+        error: "Invalid input data. Please make sure that the data you entered is correct.",
+      });
+    }
+
     // get the username and password from the request body
     const { username, password, password2 } = req.body;
 
@@ -62,6 +88,17 @@ router.post("/signup", async (req, res) => {
 // login user route
 router.post("/login", async (req, res) => {
   try {
+    // validate the request body
+    const { error } = loginValidationSchema.validate(req.body, { abortEarly: false });
+
+    // if the request body is not valid, return an error
+    if (error) {
+      return res.status(400).json({
+        ApiStatus: false,
+        error: "Invalid input data. Please make sure that the data you entered is correct.",
+      });
+    }
+
     // get the username and password from the request body
     const { username, password } = req.body;
 
