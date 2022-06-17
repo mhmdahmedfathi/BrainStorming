@@ -5,10 +5,10 @@
 
 <div align="center">
 
-[![GitHub contributors](https://img.shields.io/github/contributors/mhmdahmedfathi/GP)](https://github.com/mhmdahmedfathi/BrainStorming/contributors)
-[![GitHub issues](https://img.shields.io/github/issues/mhmdahmedfathi/GP)](https://github.com/mhmdahmedfathi/BrainStorming/issues)
-[![GitHub forks](https://img.shields.io/github/forks/mhmdahmedfathi/GP)](https://github.com/mhmdahmedfathi/BrainStorming/network)
-[![GitHub stars](https://img.shields.io/github/stars/mhmdahmedfathi/GP)](https://github.com/mhmdahmedfathi/BrainStorming/stargazers)
+[![GitHub contributors](https://img.shields.io/github/contributors/mhmdahmedfathi/BrainStorming)](https://github.com/mhmdahmedfathi/BrainStorming/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/mhmdahmedfathi/BrainStorming)](https://github.com/mhmdahmedfathi/BrainStorming/issues)
+[![GitHub forks](https://img.shields.io/github/forks/mhmdahmedfathi/BrainStorming)](https://github.com/mhmdahmedfathi/BrainStorming/network)
+[![GitHub stars](https://img.shields.io/github/stars/mhmdahmedfathi/BrainStorming)](https://github.com/mhmdahmedfathi/BrainStorming/stargazers)
 [![GitHub license](https://img.shields.io/github/license/mhmdahmedfathi/GP)](https://github.com/mhmdahmedfathi/BrainStorming/blob/main/LICENSE)
 </div>
 
