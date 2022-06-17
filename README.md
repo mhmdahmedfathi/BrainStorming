@@ -1,3 +1,4 @@
-# GP
+# BrainStorming
+BrainStorming is a platform where people with same interests can join group char rooms of certain topics and exchange their experiences.
 
-This is a graduation project for someone and we will do it for فلوث 👉🏽👈🏽
+**Note: This was a freelancing project. So, all rights are reserved to the owner of the project.**
