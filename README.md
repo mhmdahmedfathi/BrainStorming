@@ -19,7 +19,6 @@
 - [screenshots](#screenshots)
 - [Prerequisites](#prerequisites)
 - [Get started](#get-started)
-- [Screenshots](#Screenshots)
 
 ## About
 
@@ -33,7 +32,31 @@ BrainStorming is a platform where people with same interests can join group char
 - [Nodejs](https://nodejs.org/en/)
 - [Socket.io](https://socket.io/)
 
-## screenshots
+## 📷 screenshots
+
+<div name="Screenshots" align="center">
+    When you open index.html,you will see
+   <img width=100% src="screenshots/1-signedout.png" alt="logo">
+   <hr>
+   If you Don't have account,you can sign up by clicking the Register.
+    <img width=100% src="screenshots/2.png" alt="logo">
+    <hr>
+    If you have account,you can sign in by clicking the Login.
+    <img width=100% src="screenshots/3.png" alt="logo">
+    <hr>
+    This is the main page of the app after being logged in.
+    <img width=100% src="screenshots/1.png" alt="logo">
+    <hr>
+    If you want to join any room, you can click the Groups button.
+    <img width=100% src="screenshots/4.png" alt="logo">
+    <hr>
+    You will see a list of rooms, you can click on any room according to the topic you want to join it.
+    <img width=100% src="screenshots/5.png" alt="logo">
+    <hr>
+    Congratulations! you can start chatting with your friends at this topic.
+    <img width=100% src="screenshots/6.png" alt="logo">
+    <hr>
+</div>
 
 
 
@@ -69,28 +92,3 @@ You just have to make sure that you have **[Nodejs](https://nodejs.org/en/)** in
 	```
 
 
-## 📷 Screenshots
-
-<div name="Screenshots" align="center">
-    When you open index.html,you will see
-   <img width=100% src="screenshots/1-signedout.png" alt="logo">
-   <hr>
-   If you Don't have account,you can sign up by clicking the Register.
-    <img width=100% src="screenshots/2.png" alt="logo">
-    <hr>
-    If you have account,you can sign in by clicking the Login.
-    <img width=100% src="screenshots/3.png" alt="logo">
-    <hr>
-    This is the main page of the app after being logged in.
-    <img width=100% src="screenshots/1.png" alt="logo">
-    <hr>
-    If you want to join any room, you can click the Groups button.
-    <img width=100% src="screenshots/4.png" alt="logo">
-    <hr>
-    You will see a list of rooms, you can click on any room according to the topic you want to join it.
-    <img width=100% src="screenshots/5.png" alt="logo">
-    <hr>
-    Congratulations! you can start chatting with your friends at this topic.
-    <img width=100% src="screenshots/6.png" alt="logo">
-    <hr>
-</div>
